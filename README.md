@@ -45,6 +45,8 @@ services:
       - db
 ```
 
+To wait for multiple sites
+
 ```
 $ ./wait-for www.eficode.com:80 www.kadosh.io:80 -- echo "Eficode site is up & Wildcard github profile is up"
 ```
