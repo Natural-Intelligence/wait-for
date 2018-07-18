@@ -1,6 +1,8 @@
-## Wait for another service to become available
+## Wait for another services to become available
 
 `./wait-for` is a script designed to synchronize services like docker containers. It is [sh](https://en.wikipedia.org/wiki/Bourne_shell) and [alpine](https://alpinelinux.org/) compatible. It was inspired by [vishnubob/wait-for-it](https://github.com/vishnubob/wait-for-it), but the core has been rewritten at [Eficode](http://eficode.com/) by [dsuni](https://github.com/dsuni) and [mrako](https://github.com/mrako).
+
+add wait for multiple hosts by [wildcrad](https://github.com/wildcard)
 
 When using this tool, you only need to pick the `wait-for` file as part of your project.
 
@@ -9,7 +11,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ## Usage
 
 ```
-./wait-for host:port [-t timeout] [-- command args]
+./wait-for host:port [...host:port] [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
@@ -41,6 +43,10 @@ services:
     command: sh -c './wait-for db:5432 -- npm start'
     depends_on:
       - db
+```
+
+```
+$ ./wait-for www.eficode.com:80 www.kadosh.io:80 -- echo "Eficode site is up & Wildcard github profile is up"
 ```
 
 ## Testing

@@ -19,19 +19,47 @@ USAGE
   exit "$exitcode"
 }
 
+declare -a HOSTS_PAIR_STR_ARRAY
+
+check_tcp() {
+    HOST=$1
+    PORT=$2
+
+    nc -z "$HOST" "$PORT" > /dev/null 2>&1
+
+    return $?
+}
+
 wait_for() {
   for i in `seq $TIMEOUT` ; do
-    nc -z "$HOST" "$PORT" > /dev/null 2>&1
-    
-    result=$?
-    if [ $result -eq 0 ] ; then
-      if [ $# -gt 0 ] ; then
-        exec "$@"
-      fi
-      exit 0
+    #all hosts are ready
+    if [ ${#HOSTS_PAIR_STR_ARRAY[@]} -eq 0 ]; then
+        if [ $# -gt 0 ] ; then
+            exec "$@"
+        fi
+        exit 0
+    else
+        for i in "${!HOSTS_PAIR_STR_ARRAY[@]}"
+        do
+            pairStr=${HOSTS_PAIR_STR_ARRAY[$i]}
+            pair=(${pairStr//:/ })
+
+            HOST=${pair[0]}
+            PORT=${pair[1]}
+
+            check_tcp "$HOST" "$PORT"
+            result=$?
+
+            if [ $result -eq 0 ]; then
+                #remove ready host
+                unset HOSTS_PAIR_STR_ARRAY[$i]
+            fi
+        done
     fi
+
     sleep 1
   done
+
   echo "Operation timed out" >&2
   exit 1
 }
@@ -42,6 +70,7 @@ do
     *:* )
     HOST=$(printf "%s\n" "$1"| cut -d : -f 1)
     PORT=$(printf "%s\n" "$1"| cut -d : -f 2)
+    HOSTS_PAIR_STR_ARRAY+=( $1 )
     shift 1
     ;;
     -q | --quiet)
