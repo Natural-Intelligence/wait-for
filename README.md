@@ -2,7 +2,7 @@
 
 `./wait-for` is a script designed to synchronize services like docker containers. It was inspired by [vishnubob/wait-for-it](https://github.com/vishnubob/wait-for-it), but the core has been rewritten at [Eficode](http://eficode.com/) by [dsuni](https://github.com/dsuni) and [mrako](https://github.com/mrako).
 
-add wait for multiple hosts by [wildcrad](https://github.com/wildcard). Because of array usage the script isn't `sh` and alpine compatible anymore. 
+add wait for multiple hosts by [wildcard](https://github.com/wildcard). Because of array usage the script isn't `sh` and alpine compatible anymore. 
 
 When using this tool, you only need to pick the `wait-for` file as part of your project.
 
