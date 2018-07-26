@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "google should be immediately found" {
-  run ./wait-for google.com:80 -- echo 'success'
+  run ./wait-for google.com:80 -q -- echo 'success'
   
   [ "$output" = "success" ]
 }
