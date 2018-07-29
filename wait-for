@@ -57,11 +57,15 @@ wait_for() {
                 echoerr "${HOSTS_PAIR_STR_ARRAY[$i]} available after $(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
                 #remove ready host
                 unset HOSTS_PAIR_STR_ARRAY[$i]
+            else
+                duration=$SECONDS
+                echoerr "TCP check for ${HOSTS_PAIR_STR_ARRAY[$i]} failed after $(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
             fi
         done
     fi
 
     sleep 1
+    echoerr sleep
   done
 
   echo "Operation timed out" >&2
